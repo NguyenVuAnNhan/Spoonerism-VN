@@ -1,4 +1,6 @@
-import itertools
+import re
+import Spoonerism_VN
+import VN_splitter
 
 # Function to combine nucleus and diacritic into a single vowel with the correct tone mark
 def combine_vowel(nucleus, diacritic):
@@ -15,10 +17,13 @@ def combine_vowel(nucleus, diacritic):
     return nucleus  # If no diacritic, return the nucleus as it is
 
 # Function to permutate components of two words and return pairs
-def permutate(word1, word2):
+def permutate(word1, word2, regex_pattern):
     # Extract components from both words
     components1 = [word1['initial_consonant'], word1['nucleus'], word1['final_consonant'], word1['diacritic']]
     components2 = [word2['initial_consonant'], word2['nucleus'], word2['final_consonant'], word2['diacritic']]
+
+    print(components1)
+    print(components2)
     
     # List to store pairs
     pairs = []
@@ -40,27 +45,31 @@ def permutate(word1, word2):
 
         vowel1 = combine_vowel(result[1], result[3])
         vowel2 = combine_vowel(result_2[1], result_2[3])
+
         word1_combined = f"{result[0]}{vowel1}{result[2]}"
         word2_combined = f"{result_2[0]}{vowel2}{result_2[2]}"
-        result_pairs.append((word1_combined, word2_combined))
+
+        result_tuple = (word1_combined, word2_combined)
+
+        if validate(result_tuple, regex_pattern):
+            result_pairs.append(result_tuple)
     
     return result_pairs
 
-# Example usage
-word1 = {
-    'initial_consonant': 'm',
-    'nucleus': 'e',
-    'final_consonant': 'o',
-    'diacritic': 'nặng'
-}
+def validate(word_tuple, regex_pattern):
+    if bool(re.match(regex_pattern, word_tuple[0])) and bool(re.match(regex_pattern, word_tuple[0])):
+        return True
+    return False
 
-word2 = {
-    'initial_consonant': 'b',
-    'nucleus': 'e',
-    'final_consonant': '',
-    'diacritic': 'sắc'
-}
+
+
+# Example usage
+word1 = VN_splitter.split_vietnamese_word("mẹo")
+word2 = VN_splitter.split_vietnamese_word("bé")
+
+file_path = "LuomTV-amtiet-tiengViet.txt"
+regex_pattern = Spoonerism_VN.generate_regex_from_file(file_path)
 
 # Generate all permutations in pairs of word1 and word2
-all_pairs = permutate(word1, word2)
+all_pairs = permutate(word1, word2, regex_pattern)
 print(all_pairs)

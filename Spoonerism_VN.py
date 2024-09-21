@@ -17,7 +17,7 @@ def generate_regex_from_file(file_path):
 file_path = "LuomTV-amtiet-tiengViet.txt"
 regex_pattern = generate_regex_from_file(file_path)
 
-# string = "ngu"
-
-# print(re.match(regex_pattern, string))
+# string = "nứng"
+#
+# print(bool(re.match(regex_pattern, string)))
 
