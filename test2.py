@@ -22,27 +22,29 @@ def permutate(word1, word2):
     
     # List to store pairs
     pairs = []
+    result_pairs = []
 
-    # Generate all possible permutations of components using itertools.product()
-    for (initial_consonant1, nucleus1, final_consonant1, diacritic1), (initial_consonant2, nucleus2, final_consonant2, diacritic2) in itertools.product(
-            itertools.product([word1['initial_consonant'], word2['initial_consonant']], 
-                              [word1['nucleus'], word2['nucleus']], 
-                              [word1['final_consonant'], word2['final_consonant']], 
-                              [word1['diacritic'], word2['diacritic']]),
-            repeat=2):
-        
-        # Combine nucleus with diacritic for both words
-        vowel1 = combine_vowel(nucleus1, diacritic1)
-        vowel2 = combine_vowel(nucleus2, diacritic2)
-        
-        # Form the two words
-        word1_combined = f"{initial_consonant1}{vowel1}{final_consonant1}"
-        word2_combined = f"{initial_consonant2}{vowel2}{final_consonant2}"
-        
-        # Append the pair to the list
-        pairs.append((word1_combined, word2_combined))
+    for i in range(8):
+        pairs.append(f'{i:04b}')
+
+    for struct in pairs:
+        result = []
+        result_2 = []
+        for i in range(len(struct)):
+            if struct[i] == "0":
+                result.append(components1[i])
+                result_2.append(components2[i])
+            else:
+                result.append(components2[i])
+                result_2.append(components1[i])
+
+        vowel1 = combine_vowel(result[1], result[3])
+        vowel2 = combine_vowel(result_2[1], result_2[3])
+        word1_combined = f"{result[0]}{vowel1}{result[2]}"
+        word2_combined = f"{result_2[0]}{vowel2}{result_2[2]}"
+        result_pairs.append((word1_combined, word2_combined))
     
-    return pairs
+    return result_pairs
 
 # Example usage
 word1 = {

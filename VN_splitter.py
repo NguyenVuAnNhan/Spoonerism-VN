@@ -63,6 +63,6 @@ def split_vietnamese_word(word):
         return {"error": "Invalid Vietnamese word"}
 
 # Example usage
-word = "trắng"
+word = "xanh"
 components = split_vietnamese_word(word)
 print(components)
